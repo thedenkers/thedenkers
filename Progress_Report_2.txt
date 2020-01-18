@@ -1,0 +1,19 @@
+PROGRESS REPORT II
+
+Team          : The Denkers
+Table No      : 10
+Team member#1 : Asmita Khode
+Team member#2 : Anurag Deshmukh
+Team member#3 : Nikhil Soni
+Team member#4 : Vinod Kumar Gupta
+
+This is the progress report first for Smart India Hackathon 2020.
+We have done following things with their completion percentage.
+
+1.User 	Interface      : 60% completed
+2.Image Detection      : 70% completed
+3.Backend              : 70% completed
+4.Presentation         : 60% completed
+5.Integration          : 30% completed
+
+Overall 60% of the expected work is completed till 19th January'20 1:00 am 
