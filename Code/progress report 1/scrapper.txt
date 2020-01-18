@@ -1,0 +1,134 @@
+from selenium import webdriver
+import pandas as pd
+import time
+from pymongo import MongoClient
+import requests
+import shutil
+import re
+import os
+
+driver = webdriver.Chrome()
+driver.implicitly_wait(5)
+
+
+def save_image_to_file(image, dirname, index):
+    with open(f'{dirname}\\img_{index}.jpg', 'wb') as out_file:
+        shutil.copyfileobj(image.raw, out_file)
+
+
+def data_base(i,j,counter,name,weather,timing,timereqired,noOfUrl, url, description):
+    conn = MongoClient('mongodb://localhost:27017')
+    db = conn['holidify']
+    c_Name = db['PlacesToVisit']
+    print('mongodb server')
+
+    a = c_Name.insert_many([{'i':i,'j':j,'counter':counter,'name': name,'weather':weather,
+                             'timing':timing,'timereq':timereqired ,'noOfImages':noOfUrl,'imgUrls': url, 'description': description}])
+    print('data input in mongodb : ', a.inserted_ids)
+
+
+def download_images( d,links,dirname='D:\\User\\deshmukh\\Desktop\\images'):
+    length = len(links)
+    os.chdir("D:\\User\\deshmukh\\Desktop\\images")
+    os.mkdir(d)
+    dirname = dirname + f'\\{d}'
+    for index, link in enumerate(links):
+        print('Downloading {0} of {1} images'.format(index + 1, length))
+        url = link
+        response = requests.get(url, stream=True)
+        save_image_to_file(response, dirname, index)
+        del response
+
+
+counter = 0
+for j in range(5):
+    driver.get(f'https://www.holidify.com/places/goa/sightseeing-and-things-to-do.html?pageNum={j}')
+    for i in range(1,48):
+        if j==0 and i ==1:
+            continue
+        try:
+
+            xp = f'//*[@id="attractionList"]/div[{i}]/div/a'
+            card = driver.find_element_by_xpath(xp)
+            href = card.get_attribute("href")
+            driver.get(href)
+            try:
+                nameele = driver.find_element_by_xpath("//h1[@class='heading1']")
+                name = nameele.text
+                print(name)
+            except Exception as e:
+                print("name not found", e)
+
+            try:
+                try:
+                    loadmoreele=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[2]/div/div[1]/div/div/span')
+                    loadmoreele.click()
+                except Exception as e:
+                    print(e)
+                paraele = driver.find_elements_by_xpath('//div[@class="readMoreText"]/p')
+                para=[]
+                for p in paraele:
+                    para.append(p.text)
+                print(para)
+            except Exception as e:
+                print("name not found", e)
+
+            try:
+
+                infoele = driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[1]/div[3]/div/div')
+                info = infoele.text
+                print(info)
+                print()
+                try :
+                    weather=re.findall('Weather : [0-9 a-z A-Z -]+[°] [C]',info)[0].split(' : ')[1].split('°')[0]
+                    print("Weather",weather)
+                except Exception as e:
+                    weather=None
+                    print("weather not found",e)
+                try:
+                    timing=re.findall('Timings : .*', info)[0].split(' : ')[1]
+                    print("Timing",timing)
+                except Exception as e:
+                    timing=None
+                    print("timing not found")
+
+                try:
+                    entryfee=re.findall('Entry Fee : .*',info)[0].split(' : ')[1]
+                    print("Entry Fee ",entryfee)
+                except Exception as e:
+                    timereq = None
+                    print("Entry fee not found")
+
+            except Exception as e:
+                print("name not found", e)
+
+
+            try:
+                picele = driver.find_elements_by_xpath('/html/body/div[1]/div/div[1]/div[1]/div[1]/div[1]')
+                picele[0].click()
+                # time.sleep(5)
+                picList = driver.find_elements_by_xpath("//*[@class='lg-thumb group']/div/img")
+                imglist=[]
+                for l in picList:
+                    imglink = l.get_attribute("src")
+                    print(imglink)
+                    imglist.append(imglink)
+                noOfImages=len(imglist)
+                driver.back()
+            except Exception as e:
+                print("pic not found", e)
+                driver.get(f'https://www.holidify.com/places/goa/sightseeing-and-things-to-do.html?pageNum={j}')
+
+
+
+            print(counter)
+            print(href)
+            data_base(i,j,counter,name,weather,timing,timereq,noOfImages,imglist,para)
+            download_images(name,imglist)
+            # time.sleep(20)
+            counter += 1
+            driver.get(f'https://www.holidify.com/places/goa/sightseeing-and-things-to-do.html?pageNum={j}')
+            # time.sleep(2)
+        except Exception as e:
+            print(f'card {i} not found', e)
+            driver.get(f'https://www.holidify.com/places/goa/sightseeing-and-things-to-do.html?pageNum={j}')
