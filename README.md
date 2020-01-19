@@ -12,10 +12,10 @@ This is a part of participation in Smart India Hackathon 2020.
   - Asmita Khode(Team Leader)
   - Anurag Deshmukh
   - Nikhil Soni
-  - Purvesha
-  - Suraj Satankar
   - Vinod Kumar Gupta
-
+  - Purvesha (5th member)
+  - Suraj Satankar (6th member)
+  
 ## Introduction
 
 Virtual Tourist Guide is a mobile application which is developed to help tourist in Goa.
