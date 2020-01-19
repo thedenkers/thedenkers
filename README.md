@@ -22,6 +22,8 @@ Through this application the user can get information about any tourist place ju
 The User can also share and rate the place by signing up.
 The Govt of Goa will be benefitted from the project by keeping a statistics of the user activity.
 
+**Progress reports are given in text files *Progress_Report_1.txt*, *Progress_Report_2.txt*. *Progress_Report_Final.txt* **
+
 ## Technology Stack
 
 - Android(kotlin) - for mobile
