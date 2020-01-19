@@ -2,6 +2,8 @@
 
 This is a part of participation in Smart India Hackathon 2020.
 
+**Progress reports are given in text files *Progress_Report_1.txt*, *Progress_Report_2.txt*. *Progress_Report_Final.txt***
+
 ## Basic Information
 
 - **Organization:** Govt. of Goa
@@ -21,8 +23,6 @@ This application will guide the tourist throughout the journey.
 Through this application the user can get information about any tourist place just by clicking the picture of the place.
 The User can also share and rate the place by signing up.
 The Govt of Goa will be benefitted from the project by keeping a statistics of the user activity.
-
-**Progress reports are given in text files *Progress_Report_1.txt*, *Progress_Report_2.txt*. *Progress_Report_Final.txt* **
 
 ## Technology Stack
 
